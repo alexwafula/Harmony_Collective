@@ -1,58 +1,59 @@
 package com.example.harmonycollective
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
-import com.example.harmonycollective.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var albumCoverImageView: ImageView
+    private lateinit var messageTextView: TextView
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
+    private val images = arrayOf(
+        R.drawable.album_cover1,
+        R.drawable.album_cover2,
+        R.drawable.album_cover3
+    )
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private val messages = arrayOf(
+        "All your favorite artists in one place",
+        "Good music recommendations",
+        "Share music with your loved ones"
+    )
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    private var currentIndex = 0
 
-        setSupportActionBar(binding.toolbar)
-
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
-
-        // Remove the FAB click listener
-        // binding.fab.setOnClickListener { view ->
-        //     Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-        //         .setAction("Action", null).show()
-        // }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+    private val handler = Handler(Looper.getMainLooper())
+    private val runnable = object : Runnable {
+        override fun run() {
+            if (currentIndex < images.size) {
+                albumCoverImageView.setImageResource(images[currentIndex])
+                messageTextView.text = messages[currentIndex]
+                currentIndex++
+                handler.postDelayed(this, 2000) // Change image and text every 2 seconds
+            } else {
+                currentIndex = 0
+                handler.postDelayed(this, 2000)
+            }
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        // Initialize views
+        albumCoverImageView = findViewById(R.id.img_album_cover)
+        messageTextView = findViewById(R.id.txt_message)
+
+        // Start image and message rotation
+        handler.post(runnable)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacks(runnable)
     }
 }
