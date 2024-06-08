@@ -1,5 +1,6 @@
 package com.example.harmonycollective
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -34,8 +35,10 @@ class MainActivity : AppCompatActivity() {
                 currentIndex++
                 handler.postDelayed(this, 2000) // Change image and text every 2 seconds
             } else {
-                currentIndex = 0
-                handler.postDelayed(this, 2000)
+                // Navigate to the login activity
+                val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
             }
         }
     }
@@ -57,3 +60,4 @@ class MainActivity : AppCompatActivity() {
         handler.removeCallbacks(runnable)
     }
 }
+

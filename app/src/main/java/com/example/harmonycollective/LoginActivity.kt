@@ -2,7 +2,9 @@ package com.example.harmonycollective
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.spotify.sdk.android.auth.AuthorizationClient
 import com.spotify.sdk.android.auth.AuthorizationRequest
@@ -11,7 +13,7 @@ import com.spotify.sdk.android.auth.AuthorizationResponse
 class LoginActivity : AppCompatActivity() {
 
     private val CLIENT_ID = "e3f2b2705f314f8fa4a08092b833cc36"
-    private val REDIRECT_URI = "http://127.0.0.1:8000"
+    private val REDIRECT_URI = "http://localhost:8000/callback"
     private val REQUEST_CODE = 1337
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,19 +42,23 @@ class LoginActivity : AppCompatActivity() {
                     // Handle successful login and save access token
                     val accessToken = response.accessToken
                     // Navigate to the main activity
-                    val intent = Intent(this, MainActivity::class.java)
+                    val intent = Intent(this, HomeActivity::class.java)
                     intent.putExtra("access_token", accessToken)
                     startActivity(intent)
                     finish()
                 }
                 AuthorizationResponse.Type.ERROR -> {
-                    // Handle error response
-                    // You can show a message to the user or log the error
+                    Log.e("LoginActivity", "Authorization error: ${response.error}")
+                    showErrorToast("Login failed, please try again.")
                 }
                 else -> {
-                    // Handle other response types if any
+                    Log.w("LoginActivity", "Unexpected response type: ${response.type}")
+                    showErrorToast("Unexpected error, please try again.")
                 }
             }
         }
+    }
+    private fun showErrorToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
