@@ -1,5 +1,6 @@
 package com.example.harmonycollective
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
@@ -7,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.annotations.SerializedName
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -18,6 +20,7 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var textViewUserName: TextView
     private lateinit var imageViewProfile: ImageView
+    private lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,10 +28,30 @@ class HomeActivity : AppCompatActivity() {
 
         textViewUserName = findViewById(R.id.text_view_user_name)
         imageViewProfile = findViewById(R.id.image_view_profile)
+        bottomNavigationView = findViewById(R.id.bottom_navigation)
 
         val accessToken = intent.getStringExtra("access_token") ?: return
 
         fetchSpotifyUserProfile(accessToken)
+
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_profile -> true
+                R.id.navigation_recs -> {
+                    startActivity(Intent(this, RecsActivity::class.java))
+                    true
+                }
+                R.id.navigation_playlist -> {
+                    startActivity(Intent(this, PlaylistActivity::class.java))
+                    true
+                }
+                R.id.navigation_settings -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun fetchSpotifyUserProfile(accessToken: String) {
