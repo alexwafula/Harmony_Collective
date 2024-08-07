@@ -21,40 +21,30 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SplashScreen"
         tools:targetApi="31">
-        <activity
-            android:name=".MainActivity2"
-            android:exported="false"
-            android:label="@string/title_activity_main2" />
+
         <activity
             android:name=".SplashScreen"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.SplashScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:theme="@style/Theme.SplashScreen" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data
                     android:host="localhost"
                     android:path="/callback"
@@ -62,7 +52,12 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
+
         <activity android:name=".HomeActivity" />
+        <activity android:name=".RecsActivity" />
+        <activity android:name=".PlaylistActivity" />
+        <activity android:name=".SettingsActivity" />
+
     </application>
 
 </manifest>

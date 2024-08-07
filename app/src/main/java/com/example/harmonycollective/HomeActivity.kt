@@ -36,7 +36,9 @@ class HomeActivity : AppCompatActivity() {
 
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.navigation_profile -> true
+                R.id.navigation_profile -> {
+                    true
+                }
                 R.id.navigation_recs -> {
                     startActivity(Intent(this, RecsActivity::class.java))
                     true
@@ -52,6 +54,8 @@ class HomeActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+
     }
 
     private fun fetchSpotifyUserProfile(accessToken: String) {
